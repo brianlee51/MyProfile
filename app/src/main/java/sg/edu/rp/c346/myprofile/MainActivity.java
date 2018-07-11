@@ -5,11 +5,13 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText etName, etGPA;
+    RadioGroup rgGender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         etName = findViewById(R.id.editTextName);
         etGPA = findViewById(R.id.editTextGPA);
-
-
+        rgGender = findViewById(R.id.RadioGroupGender);
     }
 
     @Override
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         String name = etName.getText().toString();
         String score = etGPA.getText().toString();
         Float GPA = Float.parseFloat(score);
+        int id = rgGender.getCheckedRadioButtonId();
 
         // Step 1b: Obtain an instance of the SharedPreferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         //          The value should be from the variable defined in Step 1a
         prefEdit.putString("theName",name);
         prefEdit.putFloat("theScore", GPA);
+        prefEdit.putInt("theGender", id);
 
         // Step 1e: Call commit() method to save the changes into the SharedPreferences
         prefEdit.commit();
@@ -56,10 +59,11 @@ public class MainActivity extends AppCompatActivity {
         // Step 2b: Retrieve the saved data from the SharedPreferences object
         String msg = prefs.getString("theName", "");
         Float GPA = prefs.getFloat("theScore", 0);
+        int id = prefs.getInt("theGender",0);
 
         // Step 2c: Update the UI element with the value
         etName.setText(msg);
         etGPA.setText(GPA+"");
-
+        rgGender.check(id);
     }
 }
